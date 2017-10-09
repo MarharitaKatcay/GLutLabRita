@@ -12,7 +12,8 @@ int DContKcolorR, DContKcolorG, DContKcolorB, DContMcolorR, DContMcolorG, DContM
 int Kx, Ky, Mx, My;
 int DKx, DKy, DMx, DMy;
 float angleK, angleM, MEangleK, MEangleM;
-bool AutoRotateKleft, AutoRotateKright, AutoRotateMleft, AutoRotateMright;
+bool MEAutoRotateKleft, MEAutoRotateKright, MEAutoRotateMleft, MEAutoRotateMright;
+bool CENTERAutoRotateKleft, CENTERAutoRotateKright, CENTERAutoRotateMleft, CENTERAutoRotateMright;
 
 void UNCircle(float xc, float yc, float radius, int part)
 {
@@ -260,23 +261,32 @@ void draw_Letter_M(float height)
 
 }
 
-void RenderScene(void)
+void RenderScene(void)//прорисовка окна
 {
-	glClearColor(1, 0.82, 0.8, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	if (AutoRotateKleft)
+	glClearColor(1, 0.82, 0.8, 1.0);//устанавливает цвет, которым будет заполнен буфер кадра
+	glClear(GL_COLOR_BUFFER_BIT);//очищает буферы, а параметр определяет комбинацию констант, соответствующую буферам, которые нужно очистить
+	//поворот вокруг центра буквы на 1 градус
+	if (MEAutoRotateKleft)
 		MEangleK += 1;
-	if (AutoRotateKright)
+	if (MEAutoRotateKright)
 		MEangleK -= 1;
-	if (AutoRotateMleft)
+	if (MEAutoRotateMleft)
 		MEangleM += 1;
-	if (AutoRotateMright)
+	if (MEAutoRotateMright)
 		MEangleM -= 1;
+	//поворот вокруг центра окна на 1 градус
+	if (CENTERAutoRotateKleft)
+		angleK += 1;
+	if (CENTERAutoRotateKright)
+		angleK -= 1;
+	if (CENTERAutoRotateMleft)
+		angleM += 1;
+	if (CENTERAutoRotateMright)
+		angleM -= 1;
 
-	glLoadIdentity();
-	glRotatef(angleM, 0., 0., 1.);
-	glTranslatef(Mx, My, 0);
+	glLoadIdentity();//заменяет текущую матрицу на единичную
+	glRotatef(angleM, 0., 0., 1.);//производит поворот объекта против часовой стрелки на угол angle (в градусах) вокруг вектора  (x, y, z)
+	glTranslatef(Mx, My, 0);//производит перенос объекта, прибавляя к координатам его вершин значения своих параметров
 	glRotatef(MEangleM, 0., 0., 1.);
 	draw_Letter_M(48.);
 
@@ -289,15 +299,15 @@ void RenderScene(void)
 	glutSwapBuffers();
 }
 
-void ChangeWindowSize(int w, int h)
+void ChangeWindowSize(int w, int h)//обработка изменений окна
 {
 	glViewport(0, 0, w, h);
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
+	glMatrixMode(GL_PROJECTION);//для работы с матрицей проекций(проецирование трехмерных объектов на плоскость экрана)
+	glLoadIdentity();//заменяет текущую матрицу на единичную
 	gluOrtho2D(-w / 2, w / 2, -h / 2, h / 2);
 
-	glMatrixMode(GL_MODELVIEW);
+	glMatrixMode(GL_MODELVIEW);//для работы с модельно видовой матрицей(мировые координаты; параллельный перенос, изменение масштаба и поворот)
 	glLoadIdentity();
 }
 void DetectKeys(unsigned char key, int x, int y)
@@ -467,39 +477,39 @@ void DetectSpecKeys(int key, int x, int y)
 		break;
 	}
 	case GLUT_KEY_F6: {
-		if (AutoRotateKleft)
-			AutoRotateKleft = false;
+		if (CENTERAutoRotateKleft)
+			CENTERAutoRotateKleft = false;
 		else
-			AutoRotateKleft = true;
+			CENTERAutoRotateKleft = true;
 
-		if (AutoRotateMleft)
-			AutoRotateMleft = false;
+		if (CENTERAutoRotateMleft)
+			CENTERAutoRotateMleft = false;
 		else
-			AutoRotateMleft = true;
+			CENTERAutoRotateMleft = true;
 		break;
 	}
 	case GLUT_KEY_F7: {
-		if (AutoRotateKright)
-			AutoRotateKright = false;
+		if (CENTERAutoRotateKright)
+			CENTERAutoRotateKright = false;
 		else
-			AutoRotateKright = true;
+			CENTERAutoRotateKright = true;
 
-		if (AutoRotateMright)
-			AutoRotateMright = false;
+		if (CENTERAutoRotateMright)
+			CENTERAutoRotateMright = false;
 		else
-			AutoRotateMright = true;
+			CENTERAutoRotateMright = true;
 		break;
 	}
 	case GLUT_KEY_F8: {
-		if (AutoRotateKleft)
-			AutoRotateKleft = false;
+		if (MEAutoRotateKleft)
+			MEAutoRotateKleft = false;
 		else
-			AutoRotateKleft = true;
+			MEAutoRotateKleft = true;
 
-		if (AutoRotateMright)
-			AutoRotateMright = false;
+		if (MEAutoRotateMright)
+			MEAutoRotateMright = false;
 		else
-			AutoRotateMright = true;
+			MEAutoRotateMright = true;
 		break;
 	}
 	}
@@ -527,22 +537,23 @@ int main(int argc, char* argv[])
 	Mx = DMx = 70;
 	My = DMy = -50;
 	angleK = angleM = MEangleK = MEangleM = 0.;
-	AutoRotateKleft = AutoRotateKright = AutoRotateMleft = AutoRotateMright = false;
+	CENTERAutoRotateKleft = CENTERAutoRotateKright = CENTERAutoRotateMleft = CENTERAutoRotateMright = false;
+	MEAutoRotateKleft = MEAutoRotateKright = MEAutoRotateMleft = MEAutoRotateMright = false;
 
 
 
-	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+	glutInit(&argc, argv);//Инициализация библиотеки glut
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);//Задание режимов отображения информации, 3 компоненты цвета RGB, 2 буфера
 	glutInitWindowSize(800, 600);
 	glutInitWindowPosition(10, 10);
 	glutCreateWindow("Кацай Маргарита, ПК-15-1");
 
 
-	glutDisplayFunc(RenderScene);
-	glutIdleFunc(RenderScene);
-	glutReshapeFunc(ChangeWindowSize);
-	glutSpecialFunc(DetectSpecKeys);
-	glutKeyboardFunc(DetectKeys);
+	glutDisplayFunc(RenderScene);//функция рисования
+	glutIdleFunc(RenderScene);//функция для автоматической анимации
+	glutReshapeFunc(ChangeWindowSize); //функция обработки изменения размеров окна
+	glutSpecialFunc(DetectSpecKeys); //реагирует на нажатие специальных клавиш
+	glutKeyboardFunc(DetectKeys);//задает функцию, которая обрабатывает прерывания от клавиатуры
 	glutMainLoop();
 
 	return 0;
