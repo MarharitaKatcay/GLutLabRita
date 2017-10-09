@@ -138,7 +138,7 @@ void UNCircle(float xc, float yc, float radius, int part)
 
 void draw_Letter_K(float height)
 {
-	//контур(большая фигура)
+	//РєРѕРЅС‚СѓСЂ(Р±РѕР»СЊС€Р°СЏ С„РёРіСѓСЂР°)
 	glColor3ub(ContKcolorR, ContKcolorG, ContKcolorB);
 	UNCircle(0 - 1 * height + 0.07*height, height - 0.03*height, height, 2);
 	UNCircle(0 - 1 * height - 0.07*height, height + 0.03*height, height, 2);
@@ -169,7 +169,7 @@ void draw_Letter_K(float height)
 	glEnd();
 
 
-	//меньшая фигура
+	//РјРµРЅСЊС€Р°СЏ С„РёРіСѓСЂР°
 	glColor3ub(KcolorR, KcolorG, KcolorB);
 	UNCircle(0 - 1 * height, height, height, 2);
 	UNCircle(3.*height - 1 * height, height - 0.035*height, height, 4);
@@ -187,7 +187,7 @@ void draw_Letter_K(float height)
 
 void draw_Letter_M(float height)
 {
-	//контур(большая фигура)
+	//РєРѕРЅС‚СѓСЂ(Р±РѕР»СЊС€Р°СЏ С„РёРіСѓСЂР°)
 	glColor3ub(ContMcolorR, ContMcolorG, ContMcolorB);
 	glBegin(GL_POLYGON);
 	glVertex2f(0, 0 - 0.1*height);
@@ -230,7 +230,7 @@ void draw_Letter_M(float height)
 	glEnd();
 
 
-	//меньшая фигура
+	//РјРµРЅСЊС€Р°СЏ С„РёРіСѓСЂР°
 	glColor3ub(McolorR, McolorG, McolorB);
 	glBegin(GL_POLYGON);
 	glVertex2f(0, 0);
@@ -535,7 +535,7 @@ int main(int argc, char* argv[])
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 	glutInitWindowSize(800, 600);
 	glutInitWindowPosition(10, 10);
-	glutCreateWindow("Кацай ПК-15-1");
+	glutCreateWindow("РљР°С†Р°Р№ РњР°СЂРіР°СЂРёС‚Р°, РџРљ-15-1");
 
 
 	glutDisplayFunc(RenderScene);
